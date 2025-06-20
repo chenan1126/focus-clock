@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/clock.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>專注時鐘 - Focus Clock</title>
+    <meta name="description" content="進階番茄鐘應用，包含隨機休息提醒和專注週期管理" />
+    <meta name="keywords" content="番茄鐘,專注,時間管理,護眼,工作效率,pomodoro,focus timer" />
+    <meta name="author" content="Focus Clock" />
+    
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="專注時鐘 - 智能工作休息管理" />
+    <meta property="og:description" content="90分鐘專注週期，智能護眼提醒，提升工作效率" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://your-domain.com" />
+    <meta property="og:image" content="/clock.svg" />
+    
+    <!-- Google AdSense - Replace with your actual AdSense code -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
+    
+    <!-- Google Analytics - Optional but recommended for AdSense -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+    <script type="module" crossorigin src="/assets/index-BhCynybX.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-G9ysfJlt.css">
+  </head>
+  <body>
+    <div id="app">
+      <header class="header">
+        <h1 class="title">專注時鐘</h1>
+        <p class="subtitle">智能工作休息管理</p>
+      </header>
+      
+      <main class="main-container">
+        <div class="timer-display">
+          <div class="current-session">
+            <span class="session-type" id="sessionType">專注時間</span>
+            <div class="timer-circle">
+              <div class="timer-text">
+                <span class="time" id="timeDisplay">90:00</span>
+                <span class="phase" id="phaseDisplay">工作中</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="next-break">
+            <p>下次休息提醒: <span id="nextBreakTime">3-5 分鐘內</span></p>
+          </div>
+        </div>
+        
+        <div class="controls">
+          <button id="startPauseBtn" class="btn btn-primary">開始</button>
+          <button id="resetBtn" class="btn btn-secondary">重置</button>
+          <button id="settingsBtn" class="btn btn-icon" title="設定">⚙</button>
+        </div>
+        
+        <!-- AdSense Banner Ad (Top) -->
+        <div class="ad-container ad-top">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-XXXXXXXXXX"
+               data-ad-slot="1234567890"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+        </div>
+        
+        <div class="progress-section">
+          <h3>今日進度</h3>
+          <div class="sessions-completed">
+            <span id="completedSessions">0</span> 個工作週期已完成
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+        
+        <!-- AdSense Rectangle Ad (Middle) -->
+        <div class="ad-container ad-middle">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-XXXXXXXXXX"
+               data-ad-slot="0987654321"
+               data-ad-format="rectangle"></ins>
+        </div>
+        
+        <!-- Instructions Section -->
+        <div class="instructions-section">
+          <div class="instructions-header" id="instructionsHeader">
+            <h3>📖 使用說明</h3>
+            <button class="toggle-btn" id="toggleInstructions">展開</button>
+          </div>
+          <div class="instructions-content" id="instructionsContent">
+            <div class="instruction-grid">
+            <div class="instruction-item">
+              <div class="instruction-icon">🎯</div>
+              <div class="instruction-content">
+                <h4>開始專注</h4>
+                <p>點擊「開始」按鈕開始 90 分鐘的專注工作時間</p>
+              </div>
+            </div>
+            
+            <div class="instruction-item">
+              <div class="instruction-icon">👁️</div>
+              <div class="instruction-content">
+                <h4>護眼休息</h4>
+                <p>每 3-5 分鐘會隨機提醒，聽到提示後閉眼休息 20 秒</p>
+              </div>
+            </div>
+            
+            <div class="instruction-item">
+              <div class="instruction-icon">⏸️</div>
+              <div class="instruction-content">
+                <h4>暫停控制</h4>
+                <p>可隨時暫停/繼續，或按空白鍵快速操作</p>
+              </div>
+            </div>
+            
+            <div class="instruction-item">
+              <div class="instruction-icon">⚙️</div>
+              <div class="instruction-content">
+                <h4>個人設定</h4>
+                <p>點擊設定按鈕調整工作時長、休息時間和通知方式</p>
+              </div>
+            </div>
+            
+            <div class="instruction-item">
+              <div class="instruction-icon">🔔</div>
+              <div class="instruction-content">
+                <h4>智能提醒</h4>
+                <p>系統會自動發送音頻和視覺提醒，保護您的眼睛健康</p>
+              </div>
+            </div>
+            
+            <div class="instruction-item">
+              <div class="instruction-icon">📊</div>
+              <div class="instruction-content">
+                <h4>進度追蹤</h4>
+                <p>自動記錄完成的工作週期，幫您追蹤每日生產力</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="tips-section">
+            <h4>💡 使用小貼士</h4>
+            <ul class="tips-list">
+              <li><strong>快捷鍵：</strong>按空白鍵開始/暫停，Esc 鍵關閉彈窗</li>
+              <li><strong>通知權限：</strong>建議允許瀏覽器通知以獲得最佳體驗</li>
+              <li><strong>護眼原則：</strong>遵循 20-20-20 法則，每 20 分鐘休息 20 秒</li>
+              <li><strong>專注技巧：</strong>90 分鐘是人體自然的專注週期，充分利用這個時間</li>
+            </ul>
+          </div>
+          </div>
+        </div>
+      </main>
+      
+      <!-- Eye Rest Modal -->
+      <div id="eyeRestModal" class="modal hidden">
+        <div class="modal-content">
+          <h2>👁️ 護眼休息時間</h2>
+          <p>請閉上眼睛休息 20 秒</p>
+          <div class="countdown-circle">
+            <span id="eyeRestCountdown">20</span>
+          </div>
+          <button id="skipEyeRest" class="btn btn-small">跳過</button>
+        </div>
+      </div>
+      
+      <!-- Settings Modal -->
+      <div id="settingsModal" class="modal hidden">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>設定</h2>
+            <button class="modal-close" id="closeSettingsX">×</button>
+          </div>
+          <div class="setting-group">
+            <label>
+              <input type="checkbox" id="soundEnabled" checked> 
+              聲音提醒
+            </label>
+          </div>
+          <div class="setting-group">
+            <label>
+              <input type="checkbox" id="notificationsEnabled" checked> 
+              瀏覽器通知
+            </label>
+          </div>
+          <div class="setting-group">
+            <label>
+              工作週期時長: 
+              <select id="workDuration">
+                <option value="90">90 分鐘</option>
+                <option value="60">60 分鐘</option>
+                <option value="45">45 分鐘</option>
+              </select>
+            </label>
+          </div>
+          <div class="setting-group">
+            <label>
+              休息時長: 
+              <select id="breakDuration">
+                <option value="20">20 分鐘</option>
+                <option value="15">15 分鐘</option>
+                <option value="10">10 分鐘</option>
+              </select>
+            </label>
+          </div>
+          <button id="closeSettings" class="btn btn-primary">關閉</button>
+        </div>
+      </div>
+      
+      <!-- Footer with Policy Links -->
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-links">
+            <a href="/privacy.html">隱私政策</a>
+            <span class="divider">|</span>
+            <a href="/terms.html">使用條款</a>
+            <span class="divider">|</span>
+            <a href="mailto:support@focusclock.app">聯絡我們</a>
+          </div>
+          <div class="footer-text">
+            <p>&copy; 2025 專注時鐘 Focus Clock. 提升效率，保護健康。</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
