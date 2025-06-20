@@ -5,98 +5,357 @@
     <link rel="icon" type="image/svg+xml" href="/clock.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>隱私政策 - 專注時鐘</title>
-    <link rel="stylesheet" href="/src/style.css" />
+    <style>
+      :root {
+        --primary-color: #667eea;
+        --secondary-color: #764ba2;
+        --accent-color: #f093fb;
+        --text-color: #333;
+        --bg-color: #f8fafc;
+        --white: #ffffff;
+        --border-color: #e2e8f0;
+        --shadow: 0 10px 25px rgba(0,0,0,0.1);
+        --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.7;
+        color: var(--text-color);
+        background: var(--bg-color);
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .header {
+        background: var(--gradient);
+        color: var(--white);
+        padding: 60px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+      }
+
+      .header-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        font-weight: 300;
+      }
+
+      .main-content {
+        padding: 80px 0;
+      }
+
+      .policy-card {
+        background: var(--white);
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        padding: 50px;
+        margin-bottom: 30px;
+        border: 1px solid var(--border-color);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .policy-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      }
+
+      .section {
+        margin-bottom: 40px;
+      }
+
+      .section:last-child {
+        margin-bottom: 0;
+      }
+
+      .section h2 {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid var(--accent-color);
+        display: inline-block;
+      }
+
+      .section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.8;
+      }
+
+      .section ul {
+        list-style: none;
+        padding-left: 0;
+        margin: 20px 0;
+      }
+
+      .section li {
+        padding: 10px 0;
+        padding-left: 30px;
+        position: relative;
+        font-size: 1.05rem;
+        color: #666;
+      }
+
+      .section li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--primary-color);
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .highlight-box {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+        border-left: 4px solid var(--primary-color);
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 10px;
+      }
+
+      .contact-info {
+        background: var(--gradient);
+        color: var(--white);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .contact-info h3 {
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+      }
+
+      .email-link {
+        color: var(--white);
+        text-decoration: none;
+        font-weight: 600;
+        padding: 10px 20px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 25px;
+        display: inline-block;
+        transition: all 0.3s ease;
+      }
+
+      .email-link:hover {
+        background: rgba(255,255,255,0.3);
+        transform: translateY(-2px);
+      }
+
+      .back-button {
+        display: inline-block;
+        background: var(--gradient);
+        color: var(--white);
+        text-decoration: none;
+        padding: 15px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        margin-top: 30px;
+      }
+
+      .back-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+      }
+
+      .footer-actions {
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      .last-updated {
+        background: rgba(102, 126, 234, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        font-style: italic;
+        color: var(--primary-color);
+        margin-top: 30px;
+      }
+
+      @media (max-width: 768px) {
+        .title {
+          font-size: 2.2rem;
+        }
+        
+        .policy-card {
+          padding: 30px 20px;
+        }
+        
+        .header {
+          padding: 40px 0;
+        }
+        
+        .main-content {
+          padding: 40px 0;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="app">
-      <header class="header">
-        <h1 class="title">隱私政策</h1>
-        <p class="subtitle">專注時鐘 Focus Clock</p>
-      </header>
-      
-      <main class="policy-container">
-        <div class="policy-content">
-          <section>
-            <h2>資料收集</h2>
-            <p>我們使用 Google Analytics 來分析網站使用情況，這可能會收集匿名的使用數據，包括：</p>
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <h1 class="title">🔒 隱私政策</h1>
+          <p class="subtitle">專注時鐘 Focus Clock - 保護您的隱私權益</p>
+        </div>
+      </div>
+    </header>
+    
+    <main class="main-content">
+      <div class="container">
+        <div class="policy-card">
+          <div class="section">
+            <h2>📊 資料收集與使用</h2>
+            <p>我們致力於保護您的隱私，僅收集必要的匿名數據來改善服務品質。以下是我們可能收集的資訊：</p>
             <ul>
-              <li>網頁瀏覽記錄</li>
-              <li>設備資訊（瀏覽器類型、操作系統）</li>
-              <li>地理位置（國家/城市層級）</li>
-              <li>網站使用時間和頁面互動</li>
+              <li>網頁瀏覽記錄和使用模式</li>
+              <li>設備資訊（瀏覽器類型、操作系統、螢幕解析度）</li>
+              <li>地理位置（僅限國家/城市層級，不涉及精確位置）</li>
+              <li>網站使用時間和頁面互動數據</li>
+              <li>匿名的使用統計和效能指標</li>
             </ul>
-          </section>
+            
+            <div class="highlight-box">
+              <strong>重要承諾：</strong> 我們絕不收集您的個人身份資訊，所有數據均為匿名且僅用於改善服務。
+            </div>
+          </div>
 
-          <section>
-            <h2>廣告服務</h2>
-            <p>本網站使用 Google AdSense 顯示廣告。Google 及其合作夥伴可能會：</p>
+          <div class="section">
+            <h2>📢 廣告服務政策</h2>
+            <p>本網站使用 Google AdSense 提供相關廣告內容，以維持免費服務的運營：</p>
             <ul>
-              <li>使用 cookies 來根據用戶先前對本網站或其他網站的造訪來放送廣告</li>
-              <li>使用廣告識別碼來投放個人化廣告</li>
-              <li>收集廣告互動數據用於改善廣告品質</li>
+              <li>使用 cookies 技術來顯示個人化廣告內容</li>
+              <li>根據您的瀏覽歷史顯示相關廣告</li>
+              <li>收集廣告點擊和互動數據以優化廣告效果</li>
+              <li>與 Google 廣告合作夥伴共享匿名使用數據</li>
             </ul>
-            <p>用戶可以前往 <a href="https://adssettings.google.com" target="_blank">Google 廣告設定</a> 來停用個人化廣告功能。</p>
-          </section>
+            <p>您可以隨時前往 <a href="https://adssettings.google.com" target="_blank" style="color: var(--primary-color);">Google 廣告設定頁面</a> 來管理個人化廣告偏好或完全停用此功能。</p>
+          </div>
 
-          <section>
-            <h2>本地儲存</h2>
-            <p>我們在您的瀏覽器中儲存以下設定，這些資料不會傳送到我們的伺服器：</p>
+          <div class="section">
+            <h2>💾 本地資料儲存</h2>
+            <p>為了提供更好的使用體驗，我們在您的瀏覽器中本地儲存以下設定資料：</p>
             <ul>
-              <li>工作和休息時間偏好設定</li>
-              <li>聲音和通知偏好</li>
-              <li>使用統計（完成的工作週期數）</li>
+              <li>個人化的工作和休息時間偏好</li>
+              <li>聲音提醒和通知設定</li>
+              <li>主題和介面偏好設定</li>
+              <li>使用統計（如完成的專注週期數量）</li>
+              <li>應用程式的基本設定選項</li>
             </ul>
-          </section>
+            
+            <div class="highlight-box">
+              <strong>隱私保證：</strong> 這些資料僅儲存在您的設備上，不會傳送到我們的伺服器或與任何第三方共享。
+            </div>
+          </div>
 
-          <section>
-            <h2>第三方服務</h2>
-            <p>本網站可能使用以下第三方服務：</p>
+          <div class="section">
+            <h2>🔗 第三方服務整合</h2>
+            <p>為了提供完整的服務體驗，我們整合了以下受信任的第三方服務：</p>
             <ul>
-              <li><strong>Google Analytics</strong>：網站分析</li>
-              <li><strong>Google AdSense</strong>：廣告服務</li>
-              <li><strong>Cloudflare</strong>：內容傳送網路（如適用）</li>
+              <li><strong>Google Analytics</strong> - 網站流量分析和使用者行為分析</li>
+              <li><strong>Google AdSense</strong> - 廣告服務和內容個人化</li>
+              <li><strong>Vercel</strong> - 網站託管和內容傳送網路服務</li>
+              <li><strong>GitHub</strong> - 程式碼版本控制和開源專案管理</li>
             </ul>
-          </section>
+            <p>每個第三方服務都有其獨立的隱私政策，我們建議您也查閱相關條款。</p>
+          </div>
 
-          <section>
-            <h2>資料安全</h2>
-            <p>我們致力於保護您的隱私：</p>
+          <div class="section">
+            <h2>🛡️ 資料安全措施</h2>
+            <p>我們實施多層安全措施來保護您的資料：</p>
             <ul>
-              <li>不收集個人身份資訊</li>
-              <li>不販售用戶資料給第三方</li>
-              <li>使用 HTTPS 加密連線</li>
-              <li>定期檢查安全措施</li>
+              <li>全站使用 HTTPS 加密連線確保資料傳輸安全</li>
+              <li>定期進行安全性檢查和系統更新</li>
+              <li>嚴格限制資料存取權限，僅授權人員可存取</li>
+              <li>不儲存敏感個人資訊，降低資料外洩風險</li>
+              <li>遵循業界最佳安全實務標準</li>
             </ul>
-          </section>
+          </div>
 
-          <section>
-            <h2>Cookie 使用</h2>
-            <p>本網站使用 cookies 來：</p>
+          <div class="section">
+            <h2>🍪 Cookie 使用說明</h2>
+            <p>我們使用 cookies 和類似技術來提升您的使用體驗：</p>
             <ul>
-              <li>儲存您的偏好設定</li>
-              <li>分析網站使用情況</li>
-              <li>顯示相關廣告</li>
+              <li><strong>必要 Cookies</strong> - 維持網站基本功能運作</li>
+              <li><strong>偏好 Cookies</strong> - 記住您的個人化設定</li>
+              <li><strong>分析 Cookies</strong> - 了解網站使用情況以改善服務</li>
+              <li><strong>廣告 Cookies</strong> - 提供相關的廣告內容</li>
             </ul>
-            <p>您可以在瀏覽器設定中管理 cookies，但禁用 cookies 可能會影響網站功能。</p>
-          </section>
+            <p>您可以在瀏覽器設定中管理 cookies 偏好，但請注意，禁用某些 cookies 可能會影響網站功能的正常運作。</p>
+          </div>
 
-          <section>
-            <h2>政策更新</h2>
-            <p>我們可能會不定期更新此隱私政策。重大變更會在網站上公告。</p>
-            <p>最後更新日期：2025年6月20日</p>
-          </section>
+          <div class="section">
+            <h2>📝 政策更新機制</h2>
+            <p>為了跟上技術發展和法規變化，我們可能會不定期更新本隱私政策：</p>
+            <ul>
+              <li>重大變更將提前至少 30 天在網站上公告</li>
+              <li>更新日期會清楚標示在政策頁面上</li>
+              <li>持續使用服務視為同意更新後的政策條款</li>
+              <li>建議定期檢查本頁面以了解最新政策內容</li>
+            </ul>
+          </div>
 
-          <section>
-            <h2>聯絡我們</h2>
-            <p>如對此隱私政策有任何疑問，請透過以下方式聯絡：</p>
-            <p>電子郵件：privacy@focusclock.app</p>
-          </section>
+          <div class="contact-info">
+            <h3>📧 聯絡我們</h3>
+            <p>如果您對我們的隱私政策有任何疑問、建議或需要協助，歡迎隨時聯絡我們：</p>
+            <a href="mailto:lonestar1126@gmail.com" class="email-link">lonestar1126@gmail.com</a>
+            <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">我們承諾在 48 小時內回覆您的查詢</p>
+          </div>
+
+          <div class="last-updated">
+            <strong>最後更新日期：2025年6月20日</strong>
+          </div>
         </div>
 
-        <div class="policy-actions">
-          <a href="/" class="btn btn-primary">返回主頁</a>
+        <div class="footer-actions">
+          <a href="/" class="back-button">🏠 返回主頁</a>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   </body>
 </html>

@@ -5,117 +5,486 @@
     <link rel="icon" type="image/svg+xml" href="/clock.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>使用條款 - 專注時鐘</title>
-    <link rel="stylesheet" href="/src/style.css" />
+    <style>
+      :root {
+        --primary-color: #667eea;
+        --secondary-color: #764ba2;
+        --accent-color: #f093fb;
+        --text-color: #333;
+        --bg-color: #f8fafc;
+        --white: #ffffff;
+        --border-color: #e2e8f0;
+        --shadow: 0 10px 25px rgba(0,0,0,0.1);
+        --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        --warning-color: #ff6b6b;
+        --success-color: #4ecdc4;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.7;
+        color: var(--text-color);
+        background: var(--bg-color);
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .header {
+        background: var(--gradient);
+        color: var(--white);
+        padding: 60px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+      }
+
+      .header-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        font-weight: 300;
+      }
+
+      .main-content {
+        padding: 80px 0;
+      }
+
+      .terms-card {
+        background: var(--white);
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        padding: 50px;
+        margin-bottom: 30px;
+        border: 1px solid var(--border-color);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .terms-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      }
+
+      .section {
+        margin-bottom: 40px;
+      }
+
+      .section:last-child {
+        margin-bottom: 0;
+      }
+
+      .section h2 {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid var(--accent-color);
+        display: inline-block;
+      }
+
+      .section p {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.8;
+      }
+
+      .section ul {
+        list-style: none;
+        padding-left: 0;
+        margin: 20px 0;
+      }
+
+      .section li {
+        padding: 10px 0;
+        padding-left: 30px;
+        position: relative;
+        font-size: 1.05rem;
+        color: #666;
+      }
+
+      .section li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--success-color);
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .warning-list li::before {
+        content: '⚠️';
+        font-size: 1rem;
+      }
+
+      .prohibited-list li::before {
+        content: '❌';
+        color: var(--warning-color);
+        font-size: 1rem;
+      }
+
+      .highlight-box {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+        border-left: 4px solid var(--primary-color);
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 10px;
+      }
+
+      .warning-box {
+        background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 154, 158, 0.1));
+        border-left: 4px solid var(--warning-color);
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 10px;
+      }
+
+      .success-box {
+        background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(85, 230, 193, 0.1));
+        border-left: 4px solid var(--success-color);
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 10px;
+      }
+
+      .contact-info {
+        background: var(--gradient);
+        color: var(--white);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .contact-info h3 {
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+      }
+
+      .email-link {
+        color: var(--white);
+        text-decoration: none;
+        font-weight: 600;
+        padding: 10px 20px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 25px;
+        display: inline-block;
+        transition: all 0.3s ease;
+      }
+
+      .email-link:hover {
+        background: rgba(255,255,255,0.3);
+        transform: translateY(-2px);
+      }
+
+      .back-button {
+        display: inline-block;
+        background: var(--gradient);
+        color: var(--white);
+        text-decoration: none;
+        padding: 15px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        margin-top: 30px;
+      }
+
+      .back-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+      }
+
+      .footer-actions {
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      .last-updated {
+        background: rgba(102, 126, 234, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        font-style: italic;
+        color: var(--primary-color);
+        margin-top: 30px;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .feature-item {
+        background: rgba(102, 126, 234, 0.05);
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px solid rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .feature-item:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+      }
+
+      .feature-item h4 {
+        color: var(--primary-color);
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+      }
+
+      @media (max-width: 768px) {
+        .title {
+          font-size: 2.2rem;
+        }
+        
+        .terms-card {
+          padding: 30px 20px;
+        }
+        
+        .header {
+          padding: 40px 0;
+        }
+        
+        .main-content {
+          padding: 40px 0;
+        }
+
+        .feature-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="app">
-      <header class="header">
-        <h1 class="title">使用條款</h1>
-        <p class="subtitle">專注時鐘 Focus Clock</p>
-      </header>
-      
-      <main class="policy-container">
-        <div class="policy-content">
-          <section>
-            <h2>服務描述</h2>
-            <p>專注時鐘是一個免費的線上工具，旨在幫助用戶提高工作效率和保護眼睛健康。服務包括：</p>
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <h1 class="title">📋 使用條款</h1>
+          <p class="subtitle">專注時鐘 Focus Clock - 服務使用規範與條件</p>
+        </div>
+      </div>
+    </header>
+    
+    <main class="main-content">
+      <div class="container">
+        <div class="terms-card">
+          <div class="section">
+            <h2>🎯 服務簡介</h2>
+            <p>歡迎使用專注時鐘（Focus Clock）！我們是一個致力於提升工作效率和保護用戶健康的免費線上工具平台。</p>
+            
+            <div class="feature-grid">
+              <div class="feature-item">
+                <h4>⏰ 智能計時器</h4>
+                <p>90分鐘專注工作週期，科學化的時間管理方案</p>
+              </div>
+              <div class="feature-item">
+                <h4>👁️ 護眼提醒</h4>
+                <p>隨機智能提醒，預防眼睛疲勞和乾澀</p>
+              </div>
+              <div class="feature-item">
+                <h4>📈 進度追蹤</h4>
+                <p>詳細的使用統計和效率分析功能</p>
+              </div>
+              <div class="feature-item">
+                <h4>⚙️ 個人化設定</h4>
+                <p>客製化工作模式和提醒偏好</p>
+              </div>
+            </div>
+
+            <div class="success-box">
+              <strong>服務承諾：</strong> 我們提供完全免費的服務，致力於幫助每位用戶提升工作效率並維護健康的工作習慣。
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>✅ 正當使用規範</h2>
+            <p>為了維護良好的服務環境，使用本服務時請遵守以下規範：</p>
             <ul>
-              <li>90分鐘專注工作計時器</li>
-              <li>隨機護眼休息提醒</li>
-              <li>進度追蹤功能</li>
-              <li>個人化設定選項</li>
+              <li>僅將服務用於提升個人或工作效率的正當目的</li>
+              <li>尊重其他用戶的使用權益，不進行干擾行為</li>
+              <li>提供真實的反饋和建議，幫助我們改善服務</li>
+              <li>遵守當地法律法規和網路使用規範</li>
+              <li>理性使用服務資源，避免過度負載系統</li>
             </ul>
-          </section>
 
-          <section>
-            <h2>使用規範</h2>
-            <p>使用本服務時，您同意：</p>
+            <div class="highlight-box">
+              <strong>使用建議：</strong> 我們建議將專注時鐘作為日常工作流程的一部分，配合適當的休息和運動，以達到最佳的效率提升效果。
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>❌ 禁止行為</h2>
+            <p>以下行為可能導致服務使用權限被暫停或終止：</p>
+            <ul class="prohibited-list">
+              <li>嘗試破解、逆向工程或修改服務代碼</li>
+              <li>使用自動化工具或機器人程式存取服務</li>
+              <li>進行任何可能損害服務穩定性或安全性的活動</li>
+              <li>將服務用於非法活動或有害目的</li>
+              <li>惡意散布虛假資訊或進行網路攻擊</li>
+              <li>侵犯他人智慧財產權或隱私權</li>
+            </ul>
+
+            <div class="warning-box">
+              <strong>重要警告：</strong> 違反上述規範的行為將被視為濫用服務，我們保留立即終止服務提供的權利，並可能採取法律行動。
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>⚡ 服務可用性聲明</h2>
+            <p>我們努力提供穩定可靠的服務，但由於技術限制和外部因素，無法保證：</p>
+            <ul class="warning-list">
+              <li>服務 100% 無中斷運行（可能因維護、升級等原因暫停）</li>
+              <li>所有功能在不同設備和瀏覽器上完全一致的表現</li>
+              <li>絕對不會出現技術故障或資料遺失情況</li>
+              <li>第三方服務（如廣告、分析工具）的持續可用性</li>
+            </ul>
+
+            <div class="highlight-box">
+              <strong>服務支援：</strong> 我們提供技術支援和問題解決協助。如遇到任何問題，請透過官方管道聯絡我們。
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>🏷️ 智慧財產權政策</h2>
+            <p>專注時鐘的設計、程式碼、商標和內容均受智慧財產權法保護：</p>
             <ul>
-              <li>僅將服務用於個人或工作效率提升目的</li>
-              <li>不進行任何可能損害服務穩定性的行為</li>
-              <li>不嘗試存取或修改服務的原始碼（除非獲得授權）</li>
-              <li>不將服務用於非法活動</li>
+              <li>用戶可免費使用服務進行個人和商業用途</li>
+              <li>禁止未經授權複製、修改或重新分發服務程式碼</li>
+              <li>不得移除或修改版權聲明和歸屬資訊</li>
+              <li>歡迎分享和推薦服務，但需保持原始連結和歸屬</li>
+              <li>開源貢獻需遵循專案的授權條款</li>
             </ul>
-          </section>
 
-          <section>
-            <h2>服務可用性</h2>
-            <p>我們努力維持服務的穩定運行，但不保證：</p>
+            <div class="success-box">
+              <strong>開放精神：</strong> 我們支持開源社群和知識分享，歡迎開發者參與專案改進和功能擴展。
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>⚠️ 免責聲明</h2>
+            <p>使用專注時鐘服務時，請注意以下重要事項：</p>
+            <ul class="warning-list">
+              <li>本服務僅供參考，不能替代專業醫療或健康建議</li>
+              <li>用戶應根據個人身體狀況調整工作和休息時間</li>
+              <li>我們不對因使用服務而產生的任何直接或間接損失負責</li>
+              <li>服務內容可能包含第三方連結，我們不對外部網站負責</li>
+              <li>如有健康疑慮或工作適應問題，請諮詢專業人員</li>
+            </ul>
+
+            <div class="warning-box">
+              <strong>健康提醒：</strong> 長時間工作可能對健康造成影響。請配合適當的休息、運動和飲食，維護身心健康。
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>📢 廣告內容政策</h2>
+            <p>為維持免費服務的營運，本網站可能顯示第三方廣告內容：</p>
             <ul>
-              <li>服務 100% 的時間可用</li>
-              <li>服務不會中斷或出現錯誤</li>
-              <li>所有功能在所有設備上都能正常運作</li>
+              <li>廣告內容由 Google AdSense 等平台自動配置</li>
+              <li>我們不對廣告內容的準確性或適宜性負責</li>
+              <li>點擊廣告將導向第三方網站，適用該網站的條款</li>
+              <li>用戶可透過廣告設定管理個人化廣告偏好</li>
+              <li>我們努力確保廣告內容適當且不影響用戶體驗</li>
             </ul>
-          </section>
+          </div>
 
-          <section>
-            <h2>智慧財產權</h2>
-            <p>本服務的設計、程式碼和內容受智慧財產權法保護：</p>
+          <div class="section">
+            <h2>🔄 條款修改機制</h2>
+            <p>為了因應法規變化和服務發展，我們保留修改使用條款的權利：</p>
             <ul>
-              <li>您可以免費使用服務進行個人用途</li>
-              <li>不得複製、修改或重新分發服務代碼</li>
-              <li>不得移除版權聲明或歸屬資訊</li>
+              <li>重大變更將提前至少 30 天在網站上公告</li>
+              <li>透過電子郵件通知已註冊的用戶（如適用）</li>
+              <li>更新「最後修改日期」並在首頁顯著位置公告</li>
+              <li>持續使用服務視為同意修改後的條款</li>
+              <li>如不同意修改內容，請停止使用服務</li>
             </ul>
-          </section>
+          </div>
 
-          <section>
-            <h2>免責聲明</h2>
-            <p>使用本服務時請注意：</p>
+          <div class="section">
+            <h2>🚫 服務終止條件</h2>
+            <p>在以下情況下，我們可能暫停或終止用戶的服務使用權：</p>
+            <ul class="prohibited-list">
+              <li>嚴重違反使用條款或服務規範</li>
+              <li>進行惡意攻擊或濫用服務資源的行為</li>
+              <li>從事非法活動或有害其他用戶的行為</li>
+              <li>長期不活躍且占用系統資源</li>
+              <li>應政府機關或法院要求</li>
+            </ul>
+
+            <div class="warning-box">
+              <strong>申訴機制：</strong> 如對服務終止決定有異議，可透過官方郵件聯絡我們進行申訴和說明。
+            </div>
+          </div>
+
+          <div class="section">
+            <h2>⚖️ 法律管轄</h2>
+            <p>本使用條款的解釋和執行事宜：</p>
             <ul>
-              <li>本服務僅供參考，不能替代專業醫療建議</li>
-              <li>我們不對因使用服務而產生的任何損失負責</li>
-              <li>用戶應自行判斷適合的工作和休息時間</li>
-              <li>如有健康疑慮，請諮詢專業醫療人員</li>
+              <li>適用中華民國（台灣）相關法律法規</li>
+              <li>爭議解決優先採用友好協商方式</li>
+              <li>無法協商解決的爭議由台灣地區有管轄權的法院處理</li>
+              <li>條款如與當地法律衝突，以法律規定為準</li>
+              <li>部分條款無效不影響其他條款的有效性</li>
             </ul>
-          </section>
+          </div>
 
-          <section>
-            <h2>廣告內容</h2>
-            <p>本網站可能顯示第三方廣告：</p>
-            <ul>
-              <li>我們不對廣告內容的準確性負責</li>
-              <li>點擊廣告將導向第三方網站</li>
-              <li>第三方網站的條款和隱私政策適用於該網站</li>
-            </ul>
-          </section>
+          <div class="contact-info">
+            <h3>📧 聯絡與支援</h3>
+            <p>如果您對使用條款有任何疑問、需要技術支援或想提供寶貴建議，歡迎聯絡我們：</p>
+            <a href="mailto:lonestar1126@gmail.com" class="email-link">lonestar1126@gmail.com</a>
+            <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">我們承諾在 48 小時內回覆您的查詢，並提供最好的服務支援</p>
+          </div>
 
-          <section>
-            <h2>條款修改</h2>
-            <p>我們保留隨時修改這些使用條款的權利。重大變更將會：</p>
-            <ul>
-              <li>在網站上公告至少 30 天</li>
-              <li>透過電子郵件通知（如果您有提供）</li>
-              <li>更新本頁面的「最後更新日期」</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>終止服務</h2>
-            <p>我們可能在以下情況下終止您的服務使用權：</p>
-            <ul>
-              <li>違反使用條款</li>
-              <li>濫用服務資源</li>
-              <li>從事非法活動</li>
-            </ul>
-          </section>
-
-          <section>
-            <h2>法律管轄</h2>
-            <p>這些使用條款受中華民國法律管轄。任何爭議將在台灣的法院解決。</p>
-            <p>最後更新日期：2025年6月20日</p>
-          </section>
-
-          <section>
-            <h2>聯絡資訊</h2>
-            <p>如對使用條款有任何疑問，請聯絡：</p>
-            <p>電子郵件：support@focusclock.app</p>
-          </section>
+          <div class="last-updated">
+            <strong>最後更新日期：2025年6月20日</strong><br>
+            <small>感謝您選擇專注時鐘，讓我們一起創造更高效的工作生活！</small>
+          </div>
         </div>
 
-        <div class="policy-actions">
-          <a href="/" class="btn btn-primary">返回主頁</a>
+        <div class="footer-actions">
+          <a href="/" class="back-button">🏠 返回主頁</a>
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   </body>
 </html>
