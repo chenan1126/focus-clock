@@ -154,13 +154,11 @@ class FocusClock {
       this.applySettings();
     });
       // Eye rest modal
-    safeAddEventListener('skipEyeRest', 'click', () => this.skipEyeRest());
-      // Share functionality
+    safeAddEventListener('skipEyeRest', 'click', () => this.skipEyeRest());    // Share functionality
     safeAddEventListener('shareProgress', 'click', () => this.toggleShareOptions());
     safeAddEventListener('generateStoryImage', 'click', () => this.generateStoryImage());
     safeAddEventListener('shareTwitter', 'click', () => this.shareToTwitter());
     safeAddEventListener('shareFacebook', 'click', () => this.shareToFacebook());
-    safeAddEventListener('shareLinkedIn', 'click', () => this.shareToLinkedIn());
     safeAddEventListener('copyShareLink', 'click', () => this.copyShareLink());
     
     // Image preview modal events
@@ -518,16 +516,7 @@ class FocusClock {
     const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`;
     window.open(facebookUrl, '_blank', 'width=600,height=400');
     this.toggleShareOptions();
-  }
-  
-  shareToLinkedIn() {
-    const text = this.generateShareText();
-    const url = window.location.href;
-    const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&summary=${encodeURIComponent(text)}`;
-    window.open(linkedInUrl, '_blank', 'width=600,height=400');
-    this.toggleShareOptions();
-  }
-  
+  }  
   async copyShareLink() {
     const text = this.generateShareText();
     const url = window.location.href;
