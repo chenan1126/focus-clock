@@ -155,13 +155,18 @@ class FocusClock {
     });
       // Eye rest modal
     safeAddEventListener('skipEyeRest', 'click', () => this.skipEyeRest());
-    
-    // Share functionality
+      // Share functionality
     safeAddEventListener('shareProgress', 'click', () => this.toggleShareOptions());
+    safeAddEventListener('generateStoryImage', 'click', () => this.generateStoryImage());
     safeAddEventListener('shareTwitter', 'click', () => this.shareToTwitter());
     safeAddEventListener('shareFacebook', 'click', () => this.shareToFacebook());
     safeAddEventListener('shareLinkedIn', 'click', () => this.shareToLinkedIn());
     safeAddEventListener('copyShareLink', 'click', () => this.copyShareLink());
+    
+    // Image preview modal events
+    safeAddEventListener('closeImagePreview', 'click', () => this.closeImagePreview());
+    safeAddEventListener('downloadImage', 'click', () => this.downloadImage());
+    safeAddEventListener('shareImage', 'click', () => this.shareGeneratedImage());
     
     // Close modals when clicking outside
     document.addEventListener('click', (e) => {
@@ -554,6 +559,164 @@ class FocusClock {
     }
     
     this.toggleShareOptions();
+  }
+  
+  // 圖片生成相關方法
+  generateStoryImage() {
+    // 生成專注成果的限時動態圖片
+    const canvas = document.getElementById('hiddenCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // 設置 canvas 尺寸 (Instagram Story 比例 9:16)
+    canvas.width = 1080;
+    canvas.height = 1920;
+    
+    // 創建漸層背景
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, '#667eea');
+    gradient.addColorStop(0.5, '#764ba2');
+    gradient.addColorStop(1, '#f093fb');
+    
+    // 繪製背景
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // 設置文字樣式
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#ffffff';
+    
+    // 標題
+    ctx.font = 'bold 72px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillText('🎯 專注時鐘', canvas.width / 2, 200);
+    
+    // 副標題
+    ctx.font = '48px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillStyle = '#f0f0f0';
+    ctx.fillText('Focus Clock', canvas.width / 2, 280);
+    
+    // 主要數據區域
+    const completedSessions = this.sessionCount;
+    const totalFocusMinutes = completedSessions * 90;
+    const hours = Math.floor(totalFocusMinutes / 60);
+    const minutes = totalFocusMinutes % 60;
+    
+    // 完成週期數
+    ctx.font = 'bold 120px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillStyle = '#ffd700';
+    ctx.fillText(completedSessions.toString(), canvas.width / 2, 500);
+    
+    ctx.font = '54px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('個專注週期完成', canvas.width / 2, 580);
+    
+    // 專注時間
+    ctx.font = 'bold 84px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillStyle = '#00ff88';
+    if (hours > 0) {
+      ctx.fillText(`${hours}小時${minutes}分鐘`, canvas.width / 2, 720);
+    } else {
+      ctx.fillText(`${minutes}分鐘`, canvas.width / 2, 720);
+    }
+    
+    ctx.font = '54px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('專注時間', canvas.width / 2, 800);
+    
+    // 今日日期
+    const today = new Date();
+    const dateString = today.toLocaleDateString('zh-TW', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+    
+    ctx.font = '42px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillStyle = '#e0e0e0';
+    ctx.fillText(dateString, canvas.width / 2, 920);
+    
+    // 激勵文字
+    const motivationalTexts = [
+      '專注力就是超能力！💪',
+      '每一分專注都在改變你！⚡',
+      '持續專注，持續成長！🌟',
+      '專注讓我更強大！🚀',
+      '今天又進步了！✨'
+    ];
+    
+    const randomText = motivationalTexts[Math.floor(Math.random() * motivationalTexts.length)];
+    
+    ctx.font = '48px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillStyle = '#ffff88';
+    ctx.fillText(randomText, canvas.width / 2, 1100);
+    
+    // 護眼提醒標記
+    if (completedSessions > 0) {
+      ctx.font = '36px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.fillStyle = '#88ffaa';
+      ctx.fillText('✅ 已完成多次護眼休息', canvas.width / 2, 1200);
+    }
+    
+    // 網站標記
+    ctx.font = '32px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillStyle = '#cccccc';
+    ctx.fillText('focusclock.app', canvas.width / 2, 1400);
+    
+    // 底部裝飾
+    ctx.font = '96px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.fillText('⏰', canvas.width / 2, 1600);
+    
+    // 複製到預覽 canvas
+    const previewCanvas = document.getElementById('storyCanvas');
+    const previewCtx = previewCanvas.getContext('2d');
+    previewCtx.drawImage(canvas, 0, 0);
+    
+    // 顯示預覽 modal
+    document.getElementById('imagePreviewModal').classList.remove('hidden');
+  }
+  
+  closeImagePreview() {
+    document.getElementById('imagePreviewModal').classList.add('hidden');
+  }
+  
+  downloadImage() {
+    const canvas = document.getElementById('hiddenCanvas');
+    const link = document.createElement('a');
+    link.download = `專注時鐘-${new Date().toLocaleDateString('zh-TW')}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+  
+  async shareGeneratedImage() {
+    const canvas = document.getElementById('hiddenCanvas');
+    
+    if (navigator.share && navigator.canShare) {
+      try {
+        // 將 canvas 轉換為 blob
+        canvas.toBlob(async (blob) => {
+          const file = new File([blob], `專注時鐘-${new Date().toLocaleDateString('zh-TW')}.png`, {
+            type: 'image/png'
+          });
+          
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: '我的專注時鐘成果',
+              text: `今天完成了 ${this.sessionCount} 個專注週期！`,
+              files: [file]
+            });
+          } else {
+            // 如果不支援檔案分享，則下載圖片
+            this.downloadImage();
+          }
+        });
+      } catch (error) {
+        console.error('分享失敗:', error);
+        this.downloadImage();
+      }
+    } else {
+      // 瀏覽器不支援 Web Share API，直接下載
+      this.downloadImage();
+    }
   }
 }
 

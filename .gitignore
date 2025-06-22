@@ -23,3 +23,7 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Exclude all MD files except README.md
+*.md
+!README.md

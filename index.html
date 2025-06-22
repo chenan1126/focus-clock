@@ -80,6 +80,10 @@
               分享我的專注成果
             </button>
             <div class="share-options hidden" id="shareOptions">
+              <button class="share-option" id="generateStoryImage">
+                <span class="share-platform-icon">📱</span>
+                生成限時動態圖片
+              </button>
               <button class="share-option" id="shareTwitter">
                 <span class="share-platform-icon">🐦</span>
                 Twitter
@@ -233,6 +237,32 @@
           <button id="closeSettings" class="btn btn-primary">關閉</button>
         </div>
       </div>
+      
+      <!-- 圖片生成預覽 Modal -->
+      <div class="modal hidden" id="imagePreviewModal">
+        <div class="modal-content image-preview-content">
+          <div class="modal-header">
+            <h2>限時動態圖片</h2>
+            <button class="modal-close" id="closeImagePreview">&times;</button>
+          </div>
+          <div class="image-preview-container">
+            <canvas id="storyCanvas" width="1080" height="1920" style="max-width: 100%; height: auto;"></canvas>
+          </div>
+          <div class="image-actions">
+            <button id="downloadImage" class="btn btn-primary">
+              <span class="share-icon">💾</span>
+              下載圖片
+            </button>
+            <button id="shareImage" class="btn btn-secondary">
+              <span class="share-icon">📤</span>
+              分享圖片
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 隱藏的 Canvas 用於圖片生成 -->
+      <canvas id="hiddenCanvas" width="1080" height="1920" style="display: none;"></canvas>
       
       <!-- Footer with Policy Links -->
       <footer class="footer">

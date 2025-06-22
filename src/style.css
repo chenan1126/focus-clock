@@ -738,6 +738,34 @@ body {
   }
 }
 
+/* 手機版圖片預覽優化 */
+@media (max-width: 768px) {
+  .image-preview-content {
+    max-width: 95%;
+    max-height: 85vh;
+    padding: 1.5rem;
+  }
+  
+  .image-preview-container {
+    margin: 1rem 0;
+    padding: 0.5rem;
+  }
+  
+  .image-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .image-actions .btn {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.5rem;
+  }
+}
+
 /* Policy Pages Styles */
 .policy-container {
   max-width: 800px;
@@ -980,4 +1008,44 @@ select:focus-visible {
 @keyframes countdown-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+/* 圖片預覽 Modal 特殊樣式 */
+.image-preview-content {
+  max-width: 600px;
+  width: 95%;
+  padding: 2rem;
+}
+
+.image-preview-container {
+  margin: 1.5rem 0;
+  text-align: center;
+  background: var(--surface-light);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.image-preview-container canvas {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+}
+
+.image-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.image-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.95rem;
+  min-width: 140px;
+  justify-content: center;
 }
