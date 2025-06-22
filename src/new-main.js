@@ -34,30 +34,13 @@ class FocusClock {
     
     this.init();
   }
-    init() {
+  
+  init() {
     this.loadSettings();
-    // Initialize AdSense
-    this.initializeAds();
-    // Delay event binding to ensure DOM is ready
-    setTimeout(() => {
-      this.bindEvents();
-    }, 50);
+    this.bindEvents();
     this.updateDisplay();
     this.scheduleNextEyeRest();
     this.requestNotificationPermission();
-  }
-  
-  initializeAds() {
-    // Initialize AdSense ads after DOM is loaded
-    setTimeout(() => {
-      try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        (adsbygoogle = window.adsbygoogle || []).push({});
-        console.log('AdSense ads initialized');
-      } catch (error) {
-        console.log('AdSense not available or blocked');
-      }
-    }, 1000);
   }
   
   loadSettings() {
@@ -89,76 +72,42 @@ class FocusClock {
         this.totalSessionTime = this.settings.breakDuration * 60;
       }
       this.updateDisplay();
-    }  }
+    }
+  }
+  
   bindEvents() {
-    // Helper function to safely add event listeners
-    const safeAddEventListener = (id, event, handler) => {
-      const element = document.getElementById(id);
-      if (element) {
-        element.addEventListener(event, handler);
-        console.log(`Event listener added for ${id}`);
-        return true;
-      } else {
-        console.warn(`Element with ID '${id}' not found`);
-        return false;
-      }
-    };
-
     // Main controls
-    safeAddEventListener('startPauseBtn', 'click', () => this.toggleTimer());
-    safeAddEventListener('resetBtn', 'click', () => this.resetTimer());
-    safeAddEventListener('settingsBtn', 'click', () => this.openSettings());
+    document.getElementById('startPauseBtn').addEventListener('click', () => this.toggleTimer());
+    document.getElementById('resetBtn').addEventListener('click', () => this.resetTimer());
+    document.getElementById('settingsBtn').addEventListener('click', () => this.openSettings());
     
-    // Instructions toggle
-    safeAddEventListener('instructionsHeader', 'click', () => this.toggleInstructions());
-    safeAddEventListener('toggleInstructions', 'click', (e) => {
-      e.stopPropagation();
-      this.toggleInstructions();
-    });
-    
-    // Settings modal events
-    safeAddEventListener('closeSettings', 'click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log('Close settings button clicked');
-      this.closeSettings();
-    });
-    
-    safeAddEventListener('closeSettingsX', 'click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log('Close settings X button clicked');
-      this.closeSettings();
-    });
-    
-    // Settings form controls
-    safeAddEventListener('soundEnabled', 'change', (e) => {
+    // Settings modal
+    document.getElementById('closeSettings').addEventListener('click', () => this.closeSettings());
+    document.getElementById('soundEnabled').addEventListener('change', (e) => {
       this.settings.soundEnabled = e.target.checked;
       this.saveSettings();
     });
-    
-    safeAddEventListener('notificationsEnabled', 'change', (e) => {
+    document.getElementById('notificationsEnabled').addEventListener('change', (e) => {
       this.settings.notificationsEnabled = e.target.checked;
       this.saveSettings();
     });
-    
-    safeAddEventListener('workDuration', 'change', (e) => {
+    document.getElementById('workDuration').addEventListener('change', (e) => {
       this.settings.workDuration = parseInt(e.target.value);
       this.saveSettings();
       this.applySettings();
     });
-    
-    safeAddEventListener('breakDuration', 'change', (e) => {
+    document.getElementById('breakDuration').addEventListener('change', (e) => {
       this.settings.breakDuration = parseInt(e.target.value);
       this.saveSettings();
       this.applySettings();
     });
     
     // Eye rest modal
-    safeAddEventListener('skipEyeRest', 'click', () => this.skipEyeRest());
-      // Close modals when clicking outside
+    document.getElementById('skipEyeRest').addEventListener('click', () => this.skipEyeRest());
+    
+    // Close modals when clicking outside
     document.addEventListener('click', (e) => {
-      if (e.target.classList.contains('modal') && !e.target.closest('.modal-content')) {
+      if (e.target.classList.contains('modal')) {
         e.target.classList.add('hidden');
       }
     });
@@ -289,7 +238,8 @@ class FocusClock {
     this.updateDisplay();
     this.updateProgress();
   }
-    scheduleNextEyeRest() {
+  
+  scheduleNextEyeRest() {
     if (!this.isWorkSession || !this.isRunning) return;
     
     // Random interval between 3-5 minutes (180-300 seconds)
@@ -301,7 +251,9 @@ class FocusClock {
       }
     }, randomInterval * 1000);
     
-    // 移除顯示下次休息時間，保持隨機的驚喜感
+    // Update next break time display
+    const nextBreakMinutes = Math.ceil(randomInterval / 60);
+    document.getElementById('nextBreakTime').textContent = `約 ${nextBreakMinutes} 分鐘內`;
   }
   
   showEyeRest() {
@@ -381,19 +333,13 @@ class FocusClock {
     const progressPercentage = Math.min((this.sessionCount / dailyGoal) * 100, 100);
     document.getElementById('progressFill').style.width = `${progressPercentage}%`;
   }
-    openSettings() {
+  
+  openSettings() {
     document.getElementById('settingsModal').classList.remove('hidden');
   }
+  
   closeSettings() {
-    console.log('closeSettings method called');
-    const modal = document.getElementById('settingsModal');
-    
-    if (modal) {
-      modal.classList.add('hidden');
-      console.log('Settings modal closed successfully');
-    } else {
-      console.error('Settings modal not found!');
-    }
+    document.getElementById('settingsModal').classList.add('hidden');
   }
   
   closeAllModals() {
@@ -421,7 +367,8 @@ class FocusClock {
       });
     }
   }
-    async playNotificationSound() {
+  
+  async playNotificationSound() {
     if (!this.settings.soundEnabled) return;
     
     try {
@@ -430,58 +377,28 @@ class FocusClock {
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
       }
       
-      // Create a gentle notification sound
+      // Create a simple notification beep
       const oscillator = this.audioContext.createOscillator();
       const gainNode = this.audioContext.createGain();
       
       oscillator.connect(gainNode);
       gainNode.connect(this.audioContext.destination);
       
-      // 使用更溫和的頻率和音量
-      oscillator.frequency.setValueAtTime(520, this.audioContext.currentTime); // 降低頻率 (原800->520)
-      gainNode.gain.setValueAtTime(0.05, this.audioContext.currentTime); // 降低音量 (原0.1->0.05)
-      gainNode.gain.exponentialRampToValueAtTime(0.005, this.audioContext.currentTime + 0.8); // 更長的淡出
+      oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime);
+      gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.5);
       
       oscillator.start(this.audioContext.currentTime);
-      oscillator.stop(this.audioContext.currentTime + 0.8); // 更長的持續時間
+      oscillator.stop(this.audioContext.currentTime + 0.5);
     } catch (error) {
       console.log('Audio not available:', error);
-    }
-  }
-  
-  toggleInstructions() {
-    const content = document.getElementById('instructionsContent');
-    const toggleBtn = document.getElementById('toggleInstructions');
-    
-    if (content.classList.contains('expanded')) {
-      content.classList.remove('expanded');
-      toggleBtn.textContent = '展開';
-    } else {
-      content.classList.add('expanded');
-      toggleBtn.textContent = '收起';
     }
   }
 }
 
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM loaded, initializing FocusClock...');
-  setTimeout(() => {
-    const app = new FocusClock();
-    window.app = app;
-    console.log('FocusClock initialized successfully');
-  }, 100);
-  
-  // Global function for debugging
-  window.closeSettingsModal = function() {
-    console.log('Global close function called');
-    const modal = document.getElementById('settingsModal');
-    if (modal) {
-      modal.classList.add('hidden');
-      modal.style.display = 'none';
-      console.log('Modal closed via global function');
-    }
-  };
+  new FocusClock();
 });
 
 // Service Worker registration for PWA capabilities
