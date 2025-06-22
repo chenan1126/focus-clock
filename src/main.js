@@ -153,10 +153,17 @@ class FocusClock {
       this.saveSettings();
       this.applySettings();
     });
-    
-    // Eye rest modal
+      // Eye rest modal
     safeAddEventListener('skipEyeRest', 'click', () => this.skipEyeRest());
-      // Close modals when clicking outside
+    
+    // Share functionality
+    safeAddEventListener('shareProgress', 'click', () => this.toggleShareOptions());
+    safeAddEventListener('shareTwitter', 'click', () => this.shareToTwitter());
+    safeAddEventListener('shareFacebook', 'click', () => this.shareToFacebook());
+    safeAddEventListener('shareLinkedIn', 'click', () => this.shareToLinkedIn());
+    safeAddEventListener('copyShareLink', 'click', () => this.copyShareLink());
+    
+    // Close modals when clicking outside
     document.addEventListener('click', (e) => {
       if (e.target.classList.contains('modal') && !e.target.closest('.modal-content')) {
         e.target.classList.add('hidden');
@@ -448,8 +455,7 @@ class FocusClock {
       console.log('Audio not available:', error);
     }
   }
-  
-  toggleInstructions() {
+    toggleInstructions() {
     const content = document.getElementById('instructionsContent');
     const toggleBtn = document.getElementById('toggleInstructions');
     
@@ -460,6 +466,94 @@ class FocusClock {
       content.classList.add('expanded');
       toggleBtn.textContent = '收起';
     }
+  }
+  
+  // Share functionality methods
+  toggleShareOptions() {
+    const shareOptions = document.getElementById('shareOptions');
+    if (shareOptions) {
+      shareOptions.classList.toggle('hidden');
+    }
+  }
+  
+  generateShareText() {
+    const completedSessions = this.sessionCount;
+    const totalMinutes = completedSessions * this.settings.workDuration;
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    
+    let timeText = '';
+    if (hours > 0) {
+      timeText = `${hours}小時${minutes > 0 ? minutes + '分鐘' : ''}`;
+    } else {
+      timeText = `${minutes}分鐘`;
+    }
+    
+    const messages = [
+      `今天我用專注時鐘完成了 ${completedSessions} 個工作週期，總共專注了 ${timeText}！💪`,
+      `🎯 專注打卡！今日已完成 ${completedSessions} 個90分鐘專注週期，累積專注時間 ${timeText} 📚`,
+      `⏰ 專注時鐘幫我今天保持專注 ${timeText}，完成了 ${completedSessions} 個工作週期！效率滿分 🔥`,
+      `💡 今日專注成果：${completedSessions} 個工作週期 | ${timeText} 專注時間 | 專注時鐘讓我更高效！✨`
+    ];
+    
+    return messages[Math.floor(Math.random() * messages.length)];
+  }
+  
+  shareToTwitter() {
+    const text = this.generateShareText();
+    const url = window.location.href;
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=專注時鐘,番茄鐘,專注,效率`;
+    window.open(twitterUrl, '_blank', 'width=550,height=420');
+    this.toggleShareOptions();
+  }
+  
+  shareToFacebook() {
+    const url = window.location.href;
+    const text = this.generateShareText();
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`;
+    window.open(facebookUrl, '_blank', 'width=600,height=400');
+    this.toggleShareOptions();
+  }
+  
+  shareToLinkedIn() {
+    const text = this.generateShareText();
+    const url = window.location.href;
+    const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&summary=${encodeURIComponent(text)}`;
+    window.open(linkedInUrl, '_blank', 'width=600,height=400');
+    this.toggleShareOptions();
+  }
+  
+  async copyShareLink() {
+    const text = this.generateShareText();
+    const url = window.location.href;
+    const shareText = `${text}\n\n🔗 ${url}`;
+    
+    try {
+      await navigator.clipboard.writeText(shareText);
+      // 顯示複製成功提示
+      const copyBtn = document.getElementById('copyShareLink');
+      const originalText = copyBtn.innerHTML;
+      copyBtn.innerHTML = '<span class="share-platform-icon">✅</span>已複製';
+      copyBtn.style.background = 'var(--secondary-color)';
+      
+      setTimeout(() => {
+        copyBtn.innerHTML = originalText;
+        copyBtn.style.background = '';
+      }, 2000);
+    } catch (err) {
+      // 備用方案：創建臨時文本區域
+      const textArea = document.createElement('textarea');
+      textArea.value = shareText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      // 顯示提示
+      alert('分享內容已複製到剪貼板！');
+    }
+    
+    this.toggleShareOptions();
   }
 }
 
