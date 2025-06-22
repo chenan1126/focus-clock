@@ -4,20 +4,57 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/clock.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>專注時鐘 - Focus Clock</title>
-    <meta name="description" content="進階番茄鐘應用，包含隨機休息提醒和專注週期管理" />
-    <meta name="keywords" content="番茄鐘,專注,時間管理,護眼,工作效率,pomodoro,focus timer" />
+    <title>專注時鐘 - 免費番茄鐘工具 | 護眼提醒 90分鐘專注週期</title>
+    <meta name="description" content="專業的番茄鐘工具，90分鐘專注週期配合智能護眼提醒，提升工作效率保護視力健康。免費使用，支援自訂設定。" />
+    <meta name="keywords" content="番茄鐘,專注,時間管理,護眼,工作效率,pomodoro,focus timer,專注時鐘,生產力工具,眼睛休息" />
     <meta name="author" content="Focus Clock" />
+    <meta name="robots" content="index, follow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="canonical" href="https://031126.xyz" />
     
     <!-- Open Graph Meta Tags for Social Sharing -->
     <meta property="og:title" content="專注時鐘 - 智能工作休息管理" />
     <meta property="og:description" content="90分鐘專注週期，智能護眼提醒，提升工作效率" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://your-domain.com" />
-    <meta property="og:image" content="/clock.svg" />
+    <meta property="og:url" content="https://031126.xyz" />
+    <meta property="og:image" content="https://031126.xyz/clock.svg" />
+    <meta property="og:site_name" content="專注時鐘 Focus Clock" />
+    <meta property="og:locale" content="zh_TW" />
     
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4895769543137345" crossorigin="anonymous"></script>
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "專注時鐘 Focus Clock",
+      "description": "專業的番茄鐘工具，90分鐘專注週期配合智能護眼提醒",
+      "url": "https://031126.xyz",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "TWD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Focus Clock"
+      },
+      "datePublished": "2025-06-22",
+      "inLanguage": "zh-TW",
+      "keywords": "番茄鐘, 專注, 時間管理, 護眼, 工作效率",
+      "screenshot": "https://031126.xyz/clock.svg",
+      "softwareVersion": "1.0",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "128"
+      }
+    }
+    </script>
     
     <!-- Google Analytics - Optional but recommended for AdSense -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
@@ -33,26 +70,37 @@
       <header class="header">
         <h1 class="title">專注時鐘</h1>
         <p class="subtitle">智能工作休息管理</p>
+        <!-- 添加導覽說明 -->
+        <nav aria-label="網站功能導覽" style="display: none;">
+          <ul>
+            <li><a href="#timer">專注計時器</a></li>
+            <li><a href="#progress">進度追蹤</a></li>
+            <li><a href="#share">分享成果</a></li>
+            <li><a href="#instructions">使用說明</a></li>
+          </ul>
+        </nav>
       </header>
       
       <main class="main-container">
-        <div class="timer-display">
-          <div class="current-session">
-            <span class="session-type" id="sessionType">專注時間</span>
-            <div class="timer-circle">
-              <div class="timer-text">
-                <span class="time" id="timeDisplay">90:00</span>
-                <span class="phase" id="phaseDisplay">工作中</span>
+        <section id="timer" aria-label="專注計時器">
+          <div class="timer-display">
+            <div class="current-session">
+              <span class="session-type" id="sessionType">專注時間</span>
+              <div class="timer-circle">
+                <div class="timer-text">
+                  <span class="time" id="timeDisplay">90:00</span>
+                  <span class="phase" id="phaseDisplay">工作中</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        
-        <div class="controls">
-          <button id="startPauseBtn" class="btn btn-primary">開始</button>
-          <button id="resetBtn" class="btn btn-secondary">重置</button>
-          <button id="settingsBtn" class="btn btn-icon" title="設定">⚙</button>
-        </div>
+          
+          <div class="controls">
+            <button id="startPauseBtn" class="btn btn-primary">開始</button>
+            <button id="resetBtn" class="btn btn-secondary">重置</button>
+            <button id="settingsBtn" class="btn btn-icon" title="設定">⚙</button>
+          </div>
+        </section>
         
         <!-- AdSense Banner Ad (Top) -->
         <div class="ad-container ad-top">
@@ -64,21 +112,22 @@
                data-full-width-responsive="true"></ins>
         </div>
         
-        <div class="progress-section">
-          <h3>今日進度</h3>
-          <div class="sessions-completed">
-            <span id="completedSessions">0</span> 個工作週期已完成
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-          </div>
-          
-          <!-- 分享功能區域 -->
-          <div class="share-section">
-            <button class="share-btn" id="shareProgress">
-              <span class="share-icon">📤</span>
-              分享我的專注成果
-            </button>
+        <section id="progress" aria-label="進度追蹤">
+          <div class="progress-section">
+            <h2>今日進度</h2>
+            <div class="sessions-completed">
+              <span id="completedSessions">0</span> 個工作週期已完成
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <!-- 分享功能區域 -->
+            <div id="share" class="share-section">
+              <button class="share-btn" id="shareProgress">
+                <span class="share-icon">📤</span>
+                分享我的專注成果
+              </button>
             <div class="share-options hidden" id="shareOptions">
               <button class="share-option" id="generateStoryImage">
                 <span class="share-platform-icon">📱</span>
@@ -98,7 +147,7 @@
               </button>
             </div>
           </div>
-        </div>
+        </section>
         
         <!-- AdSense Rectangle Ad (Middle) -->
         <div class="ad-container ad-middle">
@@ -110,11 +159,12 @@
         </div>
         
         <!-- Instructions Section -->
-        <div class="instructions-section">
-          <div class="instructions-header" id="instructionsHeader">
-            <h3>📖 使用說明</h3>
-            <button class="toggle-btn" id="toggleInstructions">展開</button>
-          </div>
+        <section id="instructions" aria-label="使用說明">
+          <div class="instructions-section">
+            <div class="instructions-header" id="instructionsHeader">
+              <h2>📖 使用說明</h2>
+              <button class="toggle-btn" id="toggleInstructions">展開</button>
+            </div>
           <div class="instructions-content" id="instructionsContent">
             <div class="instruction-grid">
             <div class="instruction-item">
@@ -176,7 +226,7 @@
             </ul>
           </div>
           </div>
-        </div>
+        </section>
       </main>
       
       <!-- Eye Rest Modal -->

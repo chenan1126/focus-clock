@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://031126.xyz/sitemap.xml
+
+# Google AdSense
+User-agent: Googlebot
+Allow: /
+
+# Disallow admin or private directories (if any)
+Disallow: /admin/
+Disallow: /.well-known/
+
+# Allow all web crawlers to access CSS and JS files
+User-agent: *
+Allow: /assets/
+Allow: /*.css
+Allow: /*.js
